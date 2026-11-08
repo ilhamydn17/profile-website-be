@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -51,6 +51,38 @@ model Project {
   @@map("projects")
 }
 
+model Profile {
+  id           String   @id @default("default-profile")
+  name         String
+  title        String
+  headline     String
+  bio          String
+  location     String
+  status       String
+  availability Boolean  @default(true)
+  avatarUrl    String?
+  email        String
+  github       String
+  linkedin     String
+  resumeUrl    String
+  stats        Json     @default("[]")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+model SkillCategory {
+  id        String   @id @default(uuid())
+  category  String   @unique
+  items     Json     @default("[]")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("skill_categories")
+}
+
 model AdminUser {
   id           String   @id @default(uuid())
   email        String   @unique
@@ -61,4 +93,3 @@ model AdminUser {
 
   @@map("admin_users")
 }
-
