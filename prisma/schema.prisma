@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ExperienceType {
+  FULL_TIME
+  FREELANCE
+  CONTRACT
+  EDUCATION
+}
+
+model Experience {
+  id           String         @id @default(uuid())
+  role         String
+  company      String
+  companyUrl   String?
+  location     String
+  type         ExperienceType @default(FULL_TIME)
+  startDate    String
+  endDate      String?
+  isCurrent    Boolean        @default(false)
+  description  String[]
+  technologies String[]
+  order        Int            @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@map("experiences")
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  category    String   @default("Fullstack")
+  tags        String[]
+  demoUrl     String?
+  githubUrl   String?
+  imageUrl    String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model AdminUser {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admin_users")
+}
+
